@@ -1,0 +1,26 @@
+#!/bin/sh
+
+COMMIT_AUTHORS=$(git log --format='%aN')
+COMMIT_AUTHORS_CONDENSED=$(echo "$COMMIT_AUTHORS"|awk '{arr[$0]++} END {for (author in arr){printf "%s\t%d\n", author, arr[author];}}')
+COMMIT_AUTHORS_SORTED=$(echo "$COMMIT_AUTHORS_CONDENSED"|LC_ALL='C' sort -rn -k 2,2 -t $'\t')
+
+BIGGEST_COMMITS=$(echo "$COMMIT_AUTHORS_SORTED" | head -n1 |LC_ALL='C' cut -f2 -d$'\t')
+
+printf "%-20.20s\t %s\n" "author" "commits"
+
+while read -r LINE; do
+
+  COMMIT_AUTHOR=$(echo "$LINE"|LC_ALL='C' cut -f1,1 -d$'\t')
+  COMMIT_NUMBER=$(echo "$LINE"|LC_ALL='C' cut -f2,2 -d$'\t')
+
+  SCALE=$((40* $COMMIT_NUMBER / $BIGGEST_COMMITS))
+
+  printf "%-20.20s\t [%6d]: " "$COMMIT_AUTHOR" $COMMIT_NUMBER
+
+  for ((i=1; i < $SCALE; i++)); do
+  printf "#"
+done
+
+printf "\n"
+
+done <<< "$COMMIT_AUTHORS_SORTED"
