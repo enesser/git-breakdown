@@ -1,5 +1,32 @@
 #!/bin/sh
 
+FILE_EXTENSIONS=$(git ls-tree --full-tree -r HEAD|cut -f2 -d$'\t'|basename $(sed 's/.*\.//'))
+FILE_EXTENSIONS_CONDENSED=$(echo "$FILE_EXTENSIONS"|awk '{arr[$0]++} END {for (file in arr){printf "%s\t%d\n", file, arr[file];}}')
+FILE_EXTENSIONS_SORTED=$(echo "$FILE_EXTENSIONS_CONDENSED"|LC_ALL='C' sort -rn -k2,2 -t $'\t')
+
+BIGGEST_FILE_EXTENSION_COUNT=$(echo "$FILE_EXTENSIONS_SORTED"|head -n1 |LC_ALL='C' cut -f2 -d$'\t')
+
+printf "%-20.20s\t %s\n" "file type" "number of files"
+
+while read -r LINE; do
+
+  FILE_EXTENSION=$(echo "$LINE"|LC_ALL='C' cut -f1,1 -d$'\t')
+  FILE_EXTENSION_COUNT=$(echo "$LINE"|LC_ALL='C' cut -f2,2 -d$'\t')
+
+  SCALE=$((40* $FILE_EXTENSION_COUNT / $BIGGEST_FILE_EXTENSION_COUNT))
+
+  printf "%-20.20s\t [%6d]: " "$FILE_EXTENSION" $FILE_EXTENSION_COUNT
+
+  for ((i=1; i < $SCALE; i++)); do
+    printf "#"
+  done
+
+  printf "\n"
+
+done <<< "$FILE_EXTENSIONS_SORTED"
+
+printf "\n"
+
 COMMIT_AUTHORS=$(git log --format='%aN')
 COMMIT_AUTHORS_CONDENSED=$(echo "$COMMIT_AUTHORS"|awk '{arr[$0]++} END {for (author in arr){printf "%s\t%d\n", author, arr[author];}}')
 COMMIT_AUTHORS_SORTED=$(echo "$COMMIT_AUTHORS_CONDENSED"|LC_ALL='C' sort -rn -k 2,2 -t $'\t')
