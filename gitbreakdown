@@ -4,7 +4,7 @@ COMMIT_AUTHORS=$(git log --format='%aN')
 COMMIT_AUTHORS_CONDENSED=$(echo "$COMMIT_AUTHORS"|awk '{arr[$0]++} END {for (author in arr){printf "%s\t%d\n", author, arr[author];}}')
 COMMIT_AUTHORS_SORTED=$(echo "$COMMIT_AUTHORS_CONDENSED"|LC_ALL='C' sort -rn -k 2,2 -t $'\t')
 
-BIGGEST_COMMITS=$(echo "$COMMIT_AUTHORS_SORTED" | head -n1 |LC_ALL='C' cut -f2 -d$'\t')
+BIGGEST_COMMITS=$(echo "$COMMIT_AUTHORS_SORTED"|head -n1 |LC_ALL='C' cut -f2 -d$'\t')
 
 printf "%-20.20s\t %s\n" "author" "commits"
 
