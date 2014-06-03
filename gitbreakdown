@@ -18,9 +18,9 @@ while read -r LINE; do
   printf "%-20.20s\t [%6d]: " "$COMMIT_AUTHOR" $COMMIT_NUMBER
 
   for ((i=1; i < $SCALE; i++)); do
-  printf "#"
-done
+    printf "#"
+  done
 
-printf "\n"
+  printf "\n"
 
 done <<< "$COMMIT_AUTHORS_SORTED"
