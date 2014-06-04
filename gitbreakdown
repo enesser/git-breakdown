@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 FILE_EXTENSIONS=$(git ls-tree --full-tree -r HEAD|cut -f2 -d$'\t'|basename $(sed 's/.*\.//'))
 FILE_EXTENSIONS_CONDENSED=$(echo "$FILE_EXTENSIONS"|awk '{arr[$0]++} END {for (file in arr){printf "%s\t%d\n", file, arr[file];}}')
@@ -13,7 +13,7 @@ while read -r LINE; do
   FILE_EXTENSION=$(echo "$LINE"|LC_ALL='C' cut -f1,1 -d$'\t')
   FILE_EXTENSION_COUNT=$(echo "$LINE"|LC_ALL='C' cut -f2,2 -d$'\t')
 
-  SCALE=$((40* $FILE_EXTENSION_COUNT / $BIGGEST_FILE_EXTENSION_COUNT))
+  SCALE=$((30* $FILE_EXTENSION_COUNT / $BIGGEST_FILE_EXTENSION_COUNT))
 
   printf "%-20.20s\t [%6d]: " "$FILE_EXTENSION" $FILE_EXTENSION_COUNT
 
@@ -40,7 +40,7 @@ while read -r LINE; do
   COMMIT_AUTHOR=$(echo "$LINE"|LC_ALL='C' cut -f1,1 -d$'\t')
   COMMIT_NUMBER=$(echo "$LINE"|LC_ALL='C' cut -f2,2 -d$'\t')
 
-  SCALE=$((40* $COMMIT_NUMBER / $BIGGEST_COMMITS))
+  SCALE=$((30* $COMMIT_NUMBER / $BIGGEST_COMMITS))
 
   printf "%-20.20s\t [%6d]: " "$COMMIT_AUTHOR" $COMMIT_NUMBER
 
