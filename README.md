@@ -1,7 +1,7 @@
 git-breakdown
 ============
 
-This is a Bash script that shows a breakdown for a git repository. It will show a graph for the type of files, and 
+This is a Bash script that shows a breakdown for a Git repository. It will show a graph for the type of files, and 
 another graph for commit authors.
 
 ![Screenshot](https://cloud.githubusercontent.com/assets/5659221/5065306/2f98c9ce-6de2-11e4-8382-dde1f561bce9.png)
@@ -9,7 +9,7 @@ another graph for commit authors.
 ## Usage
 
 I prefer to copy this script somewhere in my path so it can be executed from anywhere. That's optional. But to use the script,
-simply run it in any directory that contains a git repository.
+simply run it in any directory that contains a Git repository.
 
 ```
 $ git-breakdown
